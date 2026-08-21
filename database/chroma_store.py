@@ -1,12 +1,10 @@
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 import hashlib
-from loaders.document_loader import load_documents, clean_text
+from loaders.document_loader import clean_text
 from embeddings.embedding_service import embed_chunks
 from pathlib import Path
-from langchain_ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.utils.math import cosine_similarity
 from chunking.semantic_chunker import create_semantic_chunks
 
 splitter = RecursiveCharacterTextSplitter(

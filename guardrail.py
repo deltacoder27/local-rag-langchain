@@ -1,3 +1,4 @@
+from conversation_history import create_messages_store
 from database.chroma_store import create_vector_store
 from config import EMBEDDING_MODEL, LLM_MODEL
 from langchain_ollama import OllamaEmbeddings, ChatOllama
@@ -9,6 +10,8 @@ embeddings = OllamaEmbeddings(
 )
 
 reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+
+messages_store = create_messages_store(embeddings)
 
 vector_store = create_vector_store(embeddings)
 '''
@@ -49,11 +52,22 @@ def guardrail(query, conversation_history):
 
     if allowed_documents == []:
         query = transform_query(query, conversation_history)
+        print("Transformed query: ", query)
         result = vector_store.similarity_search_with_score(query, k=3)
         threshold = 1.0
         allowed_documents = []
         for doc, score in result:
             print("Transformed similarity score: ", score)
+            if score <= threshold:
+                allowed_documents.append(doc.page_content)
+    if allowed_documents == []:
+        query = transform_query(query, messages_store.get())
+        print("Transformed query from long-term memory: ", query)
+        result = messages_store.similarity_search_with_score(query, k=2)
+        threshold = 1.0
+        allowed_documents = []
+        for doc, score in result:
+            print("Transformed similarity score with long-term memory: ", score)
             if score <= threshold:
                 allowed_documents.append(doc.page_content)
                 
@@ -70,7 +84,7 @@ def guardrail(query, conversation_history):
         approved_results = []
         for doc, score in reranked_results:
             print("Reranked score: ", score)
-            if score >= 2:
+            if score > 0:
                 approved_results.append(doc)
                 guardrail_check["Type"] = "Approved"
                 guardrail_check["documents"] = approved_results
