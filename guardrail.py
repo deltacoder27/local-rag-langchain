@@ -36,11 +36,19 @@ def transform_query(query, conversation_history):
     llm = ChatOllama(model=LLM_MODEL)
     response = llm.invoke(messages)
     return response.content
-
+def transformed_query_check(query, store):
+    print("Transformed query: ", query)
+    result = store.similarity_search_with_score(query, k=3)
+    threshold = 1.0
+    allowed_documents = []
+    for doc, score in result:
+        print("Transformed similarity score: ", score)
+        if score <= threshold:
+            allowed_documents.append(doc.page_content)
+    return allowed_documents
 
 def guardrail(query, conversation_history):
     guardrail_check = {}
-    #Potential threshold: 1.0?
     result = vector_store.similarity_search_with_score(query, k=3)
     threshold = 1.0
     allowed_documents = []
@@ -48,29 +56,13 @@ def guardrail(query, conversation_history):
         print("Original similarity score: ", score)
         if score <= threshold:
             allowed_documents.append(doc.page_content)
-            
 
     if allowed_documents == []:
         query = transform_query(query, conversation_history)
-        print("Transformed query: ", query)
-        result = vector_store.similarity_search_with_score(query, k=3)
-        threshold = 1.0
-        allowed_documents = []
-        for doc, score in result:
-            print("Transformed similarity score: ", score)
-            if score <= threshold:
-                allowed_documents.append(doc.page_content)
+        allowed_documents = transformed_query_check(query, vector_store)
     if allowed_documents == []:
         query = transform_query(query, messages_store.get())
-        print("Transformed query from long-term memory: ", query)
-        result = messages_store.similarity_search_with_score(query, k=2)
-        threshold = 1.0
-        allowed_documents = []
-        for doc, score in result:
-            print("Transformed similarity score with long-term memory: ", score)
-            if score <= threshold:
-                allowed_documents.append(doc.page_content)
-                
+        allowed_documents = transformed_query_check(query, messages_store)
     if allowed_documents != []:
         pairs = [
             [query, doc]
