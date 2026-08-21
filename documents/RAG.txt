@@ -1,0 +1,15 @@
+Retrieval augmented generation is commonly abbreviated as RAG.
+
+RAG combines document retrieval with language model generation.
+
+Relevant documents are retrieved before generating a response.
+
+Retrieved context helps reduce hallucinations.
+
+Vector databases are frequently used in RAG systems.
+
+Chunking improves retrieval accuracy for large documents.
+
+Embeddings are used to compare queries against stored content.
+
+RAG systems often include retrieval, ranking, and generation stages.

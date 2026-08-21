@@ -1,0 +1,15 @@
+Embeddings are numerical vectors that represent semantic meaning.
+
+Similar concepts tend to have embeddings that are close together.
+
+Embedding models convert text into vectors.
+
+Embedding vectors are often stored in vector databases.
+
+Embeddings enable semantic search.
+
+Embeddings are a key component of retrieval augmented generation.
+
+Different embedding models may produce different vector spaces.
+
+Distance metrics help determine similarity between embeddings.

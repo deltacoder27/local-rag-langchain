@@ -1,0 +1,8 @@
+LLM_MODEL = "qwen2.5:7b"
+EMBEDDING_MODEL = "embeddinggemma:latest"
+
+DOCUMENT_DIRECTORY = "documents"
+
+CHUNK_SIZE = 100
+CHUNK_OVERLAP = 20
+SIMILARITY_THRESHOLD = 0.4

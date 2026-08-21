@@ -1,0 +1,15 @@
+Vector databases store embeddings instead of traditional rows and columns.
+
+Embeddings are numerical representations of meaning.
+
+Vector similarity search is commonly used in AI applications.
+
+ChromaDB is an example of a vector database.
+
+Vector databases are frequently used in retrieval augmented generation systems.
+
+Documents are converted into embeddings before storage.
+
+Queries are also converted into embeddings.
+
+Results are ranked based on vector similarity.

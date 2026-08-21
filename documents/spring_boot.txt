@@ -1,0 +1,15 @@
+Spring Boot is a Java framework that simplifies application development.
+
+It uses dependency injection to manage object creation and wiring.
+
+Auto-configuration reduces the amount of manual setup required.
+
+Spring Boot applications commonly expose REST APIs through controllers.
+
+Annotations such as @RestController and @GetMapping are frequently used.
+
+Spring Boot supports profiles for environment-specific configuration.
+
+Actuator provides monitoring and health-check endpoints.
+
+Spring Boot applications are commonly packaged as executable JAR files.

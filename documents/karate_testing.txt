@@ -1,0 +1,15 @@
+Karate is an automation framework used for API testing.
+
+Karate combines API requests, assertions, and test execution in a single syntax.
+
+Tests are written in feature files using a Gherkin-style format.
+
+Karate can validate JSON responses.
+
+Karate supports data-driven testing.
+
+Karate integrates with Maven and CI/CD pipelines.
+
+Karate can execute REST API tests without requiring extensive Java code.
+
+Karate is commonly used for regression and integration testing.

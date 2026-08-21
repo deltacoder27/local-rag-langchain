@@ -1,0 +1,15 @@
+REST APIs allow systems to communicate over HTTP.
+
+Common HTTP methods include GET, POST, PUT, PATCH, and DELETE.
+
+GET requests retrieve data from a server.
+
+POST requests create new resources.
+
+PUT requests replace existing resources.
+
+DELETE requests remove resources.
+
+REST APIs commonly exchange data using JSON.
+
+Status codes such as 200, 404, and 500 communicate request outcomes.
