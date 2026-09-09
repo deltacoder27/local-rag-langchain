@@ -5,7 +5,7 @@ from loaders.document_loader import load_documents
 from langchain_core.messages import AIMessage, HumanMessage
 from rag import answer_question
 from guardrail import guardrail
-from conversation_history import create_messages_store, loader, retrieve_relevant_memories
+from conversation_history import create_messages_store, loader
 
 
 short_term_history = []
@@ -19,10 +19,10 @@ document_scanner(documents, vector_store)
 
 
 while True:
-    if len(short_term_history) > 2:
-        conversation = "\n".join([f"{message.type}: {message.content}" for message in short_term_history[:-2]])
+    if len(short_term_history) > 10:
+        conversation = "\n".join([f"{message.type}: {message.content}" for message in short_term_history[:-10]])
         loader(conversation, messages_store)
-        short_term_history = short_term_history[-2:]
+        short_term_history = short_term_history[-10:]
     question = input("Enter your question (or 'exit' to quit): ")
     if question.lower() == 'exit':
         messages_store.delete_collection()

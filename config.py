@@ -1,5 +1,6 @@
 LLM_MODEL = "qwen2.5:7b"
 EMBEDDING_MODEL = "embeddinggemma:latest"
+TOKENIZER_MODEL = "Qwen/Qwen2.5-7B"
 
 DOCUMENT_DIRECTORY = "documents"
 
