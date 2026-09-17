@@ -4,7 +4,7 @@ from langchain_ollama import OllamaEmbeddings
 from loaders.document_loader import load_documents
 from langchain_core.messages import AIMessage, HumanMessage
 from rag import answer_question
-from ml_guardrail_service import ml_guardrail
+from ml_guardrail_service import guardrail
 from conversation_history import create_messages_store, loader
 
 
@@ -27,8 +27,14 @@ while True:
     if question.lower() == 'exit':
         messages_store.delete_collection()
         break
-    ml_result = ml_guardrail(question)
-    if ml_result == 1:
+    guardrail_result = guardrail(question, short_term_history)
+    if guardrail_result == "Approved":
+        answer = answer_question(question)
+        print(f"Answer: {answer}")
+        short_term_history.append(HumanMessage(content=question))
+        short_term_history.append(AIMessage(content=answer))
+    elif guardrail_result != "Rejected":
+        question = guardrail_result
         answer = answer_question(question)
         print(f"Answer: {answer}")
         short_term_history.append(HumanMessage(content=question))

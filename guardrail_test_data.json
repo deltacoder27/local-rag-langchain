@@ -1,0 +1,26 @@
+{
+    "relevant_questions": [
+        "Who is the project manager?",
+        "Who is the engineering lead?",
+        "What is Spring Boot?",
+        "How does it work?",
+        "What is Karate Framework?",
+        "What is RAG?",
+        "How does it work?",
+        "What do GET requests do?",
+        "What are embeddings?",
+        "What are Spring Boot applications commonly packaged as?"
+    ],
+    "irrelevant_questions": [
+        "What is the weather like today?",
+        "What is the capital of France?",
+        "How do I bake a cake?",
+        "What is the meaning of life?",
+        "Who won the last football match?",
+        "What is the stock price of Apple?",
+        "How do I reset a password?",
+        "What is the best way to learn guitar?",
+        "What is the best project management software?",
+        "How do I change a flat tire?"
+    ]
+}
