@@ -3,7 +3,7 @@ from database.chroma_store import create_vector_store, document_scanner
 from langchain_ollama import OllamaEmbeddings
 from loaders.document_loader import load_documents
 from langchain_core.messages import AIMessage, HumanMessage
-from rag import answer_question
+from rag import answer_question, create_hybrid_retriever
 from ml_guardrail_service import guardrail
 from conversation_history import create_messages_store, loader
 
@@ -17,6 +17,8 @@ messages_store = create_messages_store(embeddings)
 vector_store = create_vector_store(embeddings)
 document_scanner(documents, vector_store)
 
+hybrid_retriever = create_hybrid_retriever(vector_store)
+
 
 while True:
     if len(short_term_history) > 10:
@@ -29,13 +31,13 @@ while True:
         break
     guardrail_result = guardrail(question, short_term_history)
     if guardrail_result == "Approved":
-        answer = answer_question(question)
+        answer = answer_question(question, hybrid_retriever)
         print(f"Answer: {answer}")
         short_term_history.append(HumanMessage(content=question))
         short_term_history.append(AIMessage(content=answer))
     elif guardrail_result != "Rejected":
         question = guardrail_result
-        answer = answer_question(question)
+        answer = answer_question(question, hybrid_retriever)
         print(f"Answer: {answer}")
         short_term_history.append(HumanMessage(content=question))
         short_term_history.append(AIMessage(content=answer))

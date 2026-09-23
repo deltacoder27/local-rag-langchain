@@ -17,19 +17,20 @@ llm = ChatOllama(
 )
 
 vector_store = create_vector_store(embeddings)
+def create_hybrid_retriever(vector_store):
+    stored_documents = get_stored_documents(vector_store)
 
-stored_documents = get_stored_documents(vector_store)
 
+    bm25_retriever = BM25Retriever.from_documents(stored_documents)
+    bm25_retriever.k = 3
 
-bm25_retriever = BM25Retriever.from_documents(stored_documents)
-bm25_retriever.k = 3
+    retriever = vector_store.as_retriever(search_kwargs={"k": 3})
 
-retriever = vector_store.as_retriever(search_kwargs={"k": 3})
-
-hybrid_retriever = EnsembleRetriever(
-    retrievers = [retriever, bm25_retriever],
-    weights=[0.5,0.5]
-)
+    hybrid_retriever = EnsembleRetriever(
+        retrievers = [retriever, bm25_retriever],
+        weights=[0.5,0.5]
+    )
+    return hybrid_retriever
 '''
 # Testing purposes: 
 
@@ -49,7 +50,7 @@ def generate_queries(question):
     response = llm.invoke(messages)
     return response.content.splitlines()
 
-def answer_question(search_query):
+def answer_question(search_query, hybrid_retriever):
     queries = generate_queries(search_query)
     all_results = []
     for query in queries:
