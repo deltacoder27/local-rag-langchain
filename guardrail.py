@@ -14,14 +14,7 @@ reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
 messages_store = create_messages_store(embeddings)
 
 vector_store = create_vector_store(embeddings)
-'''
-# Testing purposes
-conversation_history = [
-    "User: What is Spring Boot?",
-    "Assistant: Spring Boot is a Java framework."
-]
-query = "What is that"
-'''
+
 def transform_query(query, conversation_history):
     messages = [
         SystemMessage(content=(
@@ -37,12 +30,10 @@ def transform_query(query, conversation_history):
     response = llm.invoke(messages)
     return response.content
 def transformed_query_check(query, store):
-    print("Transformed query: ", query)
     result = store.similarity_search_with_score(query, k=3)
     threshold = 1.0
     allowed_documents = []
     for doc, score in result:
-        print("Transformed similarity score: ", score)
         if score <= threshold:
             allowed_documents.append(doc.page_content)
     return allowed_documents
@@ -53,7 +44,6 @@ def guardrail(query, conversation_history):
     threshold = 1.0
     allowed_documents = []
     for doc, score in result:
-        print("Original similarity score: ", score)
         if score <= threshold:
             allowed_documents.append(doc.page_content)
 
@@ -75,7 +65,6 @@ def guardrail(query, conversation_history):
         reranked_results = scored_results[:3]
         approved_results = []
         for doc, score in reranked_results:
-            print("Reranked score: ", score)
             if score > 0:
                 approved_results.append(doc)
                 guardrail_check["Type"] = "Approved"
